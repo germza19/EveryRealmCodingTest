@@ -8,8 +8,6 @@ public class RotateAction : PerformAction
 {
     public float rotationSpeed;
 
-    private CancellationTokenSource _cancellationTokenSource;
-
     public RotateAction(float rotationSpeed)
     {
         this.rotationSpeed = rotationSpeed;
@@ -19,8 +17,8 @@ public class RotateAction : PerformAction
     {
         shouldPerformAction = true;
 
-        _cancellationTokenSource = new CancellationTokenSource();
-        await RotateAsync(transform, _cancellationTokenSource.Token);
+        cancellationTokenSource = new CancellationTokenSource();
+        await RotateAsync(transform, cancellationTokenSource.Token);
     }
     private async Task RotateAsync(Transform transform, CancellationToken cancellationToken)
     {
@@ -54,20 +52,20 @@ public class RotateAction : PerformAction
         shouldPerformAction = false;
 
 
-        CancelScalingTask();
-    }
-
-    private void CancelScalingTask()
-    {
-        if (_cancellationTokenSource != null)
-        {
-            _cancellationTokenSource.Cancel();
-            _cancellationTokenSource.Dispose();
-            _cancellationTokenSource = null;
-        }
+        CancelTask();
     }
     public override void ChangeActivationState()
     {
         hasBeenActivated = !hasBeenActivated;
+    }
+
+    public override void CancelTask()
+    {
+        if (cancellationTokenSource != null)
+        {
+            cancellationTokenSource.Cancel();
+            cancellationTokenSource.Dispose();
+            cancellationTokenSource = null;
+        }
     }
 }

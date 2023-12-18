@@ -7,7 +7,7 @@ public class ObjectController : MonoBehaviour
 {
     public List<PerformAction> performActions {  get; private set; }
 
-    private RotateAction _rotateAction = new RotateAction(30f);
+    private RotateAction _rotateAction = new RotateAction(200f);
     private ChangeSizeAction _changeSizeAction = new ChangeSizeAction(5f, 2f, 0.5f);
     private ChangeColorAction _changeColorAction = new ChangeColorAction();
 

@@ -10,13 +10,11 @@ public class ChangeColorAction : PerformAction
     private MaterialPropertyBlock _materialPropertyBlock;
     private Renderer _rend;
 
-    private CancellationTokenSource _cancellationTokenSource;
-
     public async override void DoAction(Transform transform)
     {
         shouldPerformAction = true;
-        _cancellationTokenSource = new CancellationTokenSource();
-        await ChangeColorAsync(transform, _cancellationTokenSource.Token);
+        cancellationTokenSource = new CancellationTokenSource();
+        await ChangeColorAsync(transform, cancellationTokenSource.Token);
     }
 
     private async Task ChangeColorAsync(Transform transform, CancellationToken cancellationToken)
@@ -47,24 +45,20 @@ public class ChangeColorAction : PerformAction
     {
         shouldPerformAction = false;
 
-        ////Color originalColor = new Color(1f, 1f, 1f);
-        ////materialPropertyBlock.SetColor("_Color", originalColor);
-        //rend.SetPropertyBlock(materialPropertyBlock);
-
-        CancelScalingTask();
-    }
-
-    private void CancelScalingTask()
-    {
-        if (_cancellationTokenSource != null)
-        {
-            _cancellationTokenSource.Cancel();
-            _cancellationTokenSource.Dispose();
-            _cancellationTokenSource = null;
-        }
+        CancelTask();
     }
     public override void ChangeActivationState()
     {
         hasBeenActivated = !hasBeenActivated;
+    }
+
+    public override void CancelTask()
+    {
+        if (cancellationTokenSource != null)
+        {
+            cancellationTokenSource.Cancel();
+            cancellationTokenSource.Dispose();
+            cancellationTokenSource = null;
+        }
     }
 }

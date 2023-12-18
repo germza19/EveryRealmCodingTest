@@ -12,8 +12,6 @@ public class ChangeSizeAction : PerformAction
 
     private float _accumulatedTime = 0f;
 
-    private CancellationTokenSource _cancellationTokenSource;
-
     public ChangeSizeAction(float scaleSpeed, float maxScale, float minScale)
     {
         this._scaleSpeed = scaleSpeed;
@@ -23,13 +21,13 @@ public class ChangeSizeAction : PerformAction
 
     public async override void DoAction(Transform transform)
     {
-        CancelScalingTask();
+        CancelTask();
 
         shouldPerformAction = true;
         _accumulatedTime = 0f;
 
-        _cancellationTokenSource = new CancellationTokenSource();
-        await ScaleAsync(transform, _cancellationTokenSource.Token);
+        cancellationTokenSource = new CancellationTokenSource();
+        await ScaleAsync(transform, cancellationTokenSource.Token);
     }
 
     private async Task ScaleAsync(Transform transform, CancellationToken cancellationToken)
@@ -61,21 +59,21 @@ public class ChangeSizeAction : PerformAction
 
         _accumulatedTime = 0f;
 
-        CancelScalingTask();
-    }
-
-    private void CancelScalingTask()
-    {
-        if (_cancellationTokenSource != null)
-        {
-            _cancellationTokenSource.Cancel();
-            _cancellationTokenSource.Dispose();
-            _cancellationTokenSource = null;
-        }
+        CancelTask();
     }
 
     public override void ChangeActivationState()
     {
         hasBeenActivated = !hasBeenActivated;
+    }
+
+    public override void CancelTask()
+    {
+        if (cancellationTokenSource != null)
+        {
+            cancellationTokenSource.Cancel();
+            cancellationTokenSource.Dispose();
+            cancellationTokenSource = null;
+        }
     }
 }
