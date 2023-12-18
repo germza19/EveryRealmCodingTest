@@ -8,6 +8,7 @@ public class ObjectController : MonoBehaviour
     [SerializeField] private List<PerformAction> _performActions = new List<PerformAction>();
     private RotateAction _rotateAction = new RotateAction(30f);
     private ChangeSizeAction _changeSizeAction = new ChangeSizeAction(5f, 2f, 0.5f);
+    private ChangeColorAction _changeColorAction = new ChangeColorAction();
 
     public bool enableActions;
     public bool isSelected = false;
@@ -61,6 +62,7 @@ public class ObjectController : MonoBehaviour
     {
         _performActions.Add(_rotateAction);
         _performActions.Add(_changeSizeAction);
+        _performActions.Add(_changeColorAction);
     }
 }
 

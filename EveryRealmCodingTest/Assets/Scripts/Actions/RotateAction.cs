@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class RotateAction : PerformAction
 {
-    public float rotationSpeed = 20f;
+    public float rotationSpeed;
 
     private CancellationTokenSource _cancellationTokenSource;
 
@@ -44,7 +44,7 @@ public class RotateAction : PerformAction
             }
             else
             {
-                await Task.Delay(16);
+                await Task.Yield();
             }
         }
     }

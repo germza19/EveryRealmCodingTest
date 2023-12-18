@@ -4,47 +4,35 @@ using System.Threading;
 using System.Threading.Tasks;
 using UnityEngine;
 
-public class ChangeSizeAction : PerformAction
+public class ChangeColorAction : PerformAction
 {
-    private float _scaleSpeed;
-    private float _maxScale;
-    private float _minScale;
 
-    private float _accumulatedTime = 0f;
+    private MaterialPropertyBlock materialPropertyBlock;
+    private Renderer rend;
 
     private CancellationTokenSource _cancellationTokenSource;
 
-    public ChangeSizeAction(float scaleSpeed, float maxScale, float minScale)
-    {
-        this._scaleSpeed = scaleSpeed;
-        this._maxScale = maxScale;
-        this._minScale = minScale;
-    }
-
     public async override void DoAction(Transform transform)
     {
-        CancelScalingTask();
-
         shouldPerformAction = true;
-        _accumulatedTime = 0f;
-
         _cancellationTokenSource = new CancellationTokenSource();
-        await ScaleAsync(transform, _cancellationTokenSource.Token);
+        await ChangeColorAsync(transform, _cancellationTokenSource.Token);
     }
 
-    private async Task ScaleAsync(Transform transform, CancellationToken cancellationToken)
+    private async Task ChangeColorAsync(Transform transform, CancellationToken cancellationToken)
     {
+        rend = transform.GetComponent<Renderer>();
+        materialPropertyBlock = new MaterialPropertyBlock();
+
         while (!cancellationToken.IsCancellationRequested)
         {
-            if(shouldPerformAction)
+            if (shouldPerformAction)
             {
-                _accumulatedTime += Time.deltaTime;
+                Color randomColor = new Color(Random.value, Random.value, Random.value);
 
-                float scaleFactor = Mathf.Sin(_accumulatedTime * _scaleSpeed);
+                materialPropertyBlock.SetColor("_Color", randomColor);
 
-                float newScale = Mathf.Lerp(_minScale, _maxScale, (scaleFactor + 1f) / 2f);
-
-                transform.localScale = new Vector3(newScale, newScale, newScale);
+                rend.SetPropertyBlock(materialPropertyBlock);
 
                 await Task.Yield();
             }
@@ -58,9 +46,10 @@ public class ChangeSizeAction : PerformAction
     public override void StopAction(Transform transform)
     {
         shouldPerformAction = false;
-
-        _accumulatedTime = 0f;
-
+        // Reset color to original state when stopping the action
+        Color originalColor = new Color(1f, 1f, 1f); // Set to your original color
+        materialPropertyBlock.SetColor("_Color", originalColor);
+        rend.SetPropertyBlock(materialPropertyBlock);
         CancelScalingTask();
     }
 
