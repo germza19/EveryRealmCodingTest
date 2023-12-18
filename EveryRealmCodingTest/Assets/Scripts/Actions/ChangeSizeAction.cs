@@ -73,4 +73,9 @@ public class ChangeSizeAction : PerformAction
             _cancellationTokenSource = null;
         }
     }
+
+    public override void ChangeActivationState()
+    {
+        hasBeenActivated = !hasBeenActivated;
+    }
 }

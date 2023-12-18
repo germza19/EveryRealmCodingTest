@@ -1,12 +1,16 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class SelectionManager : MonoBehaviour
 {
+    public static Action<ObjectController> OnSelectedObject;
+
     [SerializeField] private LayerMask _selectableLayer;
-    [SerializeField] private Transform _selection;
-    [SerializeField] private ObjectController _currentObject;
+    private Transform _selection;
+     private ObjectController _currentObject;
 
     private void Awake()
     {
@@ -34,8 +38,9 @@ public class SelectionManager : MonoBehaviour
                 if(objectController != null && _currentObject != objectController)
                 {
                     _currentObject = objectController;
-                    _currentObject.isSelected = true;
-                    _currentObject.DoActions();
+
+                    OnSelectedObject?.Invoke(_currentObject);
+                    _currentObject.HandleSelection();
                 }
             }
         }
@@ -43,8 +48,7 @@ public class SelectionManager : MonoBehaviour
         {
             if(_currentObject != null)
             {
-                _currentObject.isSelected = false;
-                _currentObject.StopActions();
+                _currentObject.HandleDeselection();
                 _currentObject = null;
             }
         }
