@@ -7,10 +7,6 @@ public class ObjectController : MonoBehaviour
 {
     public List<PerformAction> performActions;
 
-    //private RotateAction _rotateAction = new RotateAction(200f);
-    //private ChangeSizeAction _changeSizeAction = new ChangeSizeAction(5f, 2f, 0.5f);
-    //private ChangeColorAction _changeColorAction = new ChangeColorAction();
-
     private void OnEnable()
     {
         ResetActions();

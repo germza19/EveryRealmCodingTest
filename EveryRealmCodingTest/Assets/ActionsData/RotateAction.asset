@@ -12,5 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 62be1d17fcc09314a8b02a4bd916af55, type: 3}
   m_Name: RotateAction
   m_EditorClassIdentifier: 
+  iconSprite: {fileID: 21300000, guid: b3e8924802203c84c83996e3bca8bee8, type: 3}
   shouldPerformAction: 0
-  rotationSpeed: 15
+  rotationSpeed: 50

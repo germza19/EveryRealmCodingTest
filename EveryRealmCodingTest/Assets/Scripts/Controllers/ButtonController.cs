@@ -4,14 +4,15 @@ using UnityEngine.UI;
 public class ButtonController : MonoBehaviour
 {
     private Button _button;
-    private Image _image;
-    public PerformAction performAction;
-    public ObjectController currentController;
+    private Image _buttonImage;
+    private PerformAction _performAction;
+    private ObjectController _currentController;
+    [SerializeField] private Image _iconImage;
 
     private void Awake()
     {
         _button = GetComponent<Button>();
-        _image = GetComponent<Image>();
+        _buttonImage = GetComponent<Image>();
     }
     void Start()
     {
@@ -22,43 +23,48 @@ public class ButtonController : MonoBehaviour
     }
     public void InitializeButton(PerformAction performAction)
     {
-        this.performAction = performAction;
+        this._performAction = performAction;
 
+        SetIconImage();
         SetButtonColor(CheckIfHasBehaviour());
     }
     public void SetButton(ObjectController currentController)
     {
-        this.currentController = currentController;
+        this._currentController = currentController;
 
         SetButtonColor(CheckIfHasBehaviour());
     }
 
     private void HandleButtonClick()
     {
-        if (performAction != null && currentController != null)
+        if (_performAction != null && _currentController != null)
         {
-            currentController.HandleActionButton(performAction);
+            _currentController.HandleActionButton(_performAction);
 
             SetButtonColor(CheckIfHasBehaviour());
         }
     }
 
+    private void SetIconImage()
+    {
+        _iconImage.sprite = _performAction.iconSprite;
+    }
     private void SetButtonColor(bool value)
     {
         if(value)
         {
-            _image.color = Color.green;
+            _buttonImage.color = Color.green;
         }
         else
         {
-            _image.color = Color.gray;
+            _buttonImage.color = Color.gray;
         }
     }
     private bool CheckIfHasBehaviour()
     {
-        if(currentController != null)
+        if(_currentController != null)
         {
-            if (currentController.performActions.Contains(performAction))
+            if (_currentController.performActions.Contains(_performAction))
             {
                 return true;
             }

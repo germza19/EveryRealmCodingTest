@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2862ce898c71f5644a98984431b80fee, type: 3}
   m_Name: ChangeSizeAction
   m_EditorClassIdentifier: 
-  shouldPerformAction: 0
+  iconSprite: {fileID: 21300000, guid: de839edd7dcc1f445bb5f2ff861bc6ad, type: 3}
   _scaleSpeed: 10
   _maxScale: 2
   _minScale: 0.5

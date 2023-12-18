@@ -4,6 +4,7 @@ using System.Threading;
 using UnityEngine;
 public class PerformAction : ScriptableObject
 {
+    public Sprite iconSprite;
     public bool shouldPerformAction = false;
 
     public CancellationTokenSource cancellationTokenSource;
