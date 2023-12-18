@@ -4,19 +4,41 @@ using System.Threading;
 using System.Threading.Tasks;
 using UnityEngine;
 
+[CreateAssetMenu(fileName = "ChangeColorAction", menuName = "Actions/ Change Color")]
 public class ChangeColorAction : PerformAction
 {
-
     private MaterialPropertyBlock _materialPropertyBlock;
     private Renderer _rend;
 
     public async override void DoAction(Transform transform)
     {
+        base.DoAction(transform);
+
         shouldPerformAction = true;
         cancellationTokenSource = new CancellationTokenSource();
         await ChangeColorAsync(transform, cancellationTokenSource.Token);
     }
 
+    public override void StopAction(Transform transform)
+    {
+        base.StopAction(transform);
+
+        shouldPerformAction = false;
+
+        CancelTask();
+    }
+
+    public override void CancelTask()
+    {
+        base.CancelTask();
+
+        if (cancellationTokenSource != null)
+        {
+            cancellationTokenSource.Cancel();
+            cancellationTokenSource.Dispose();
+            cancellationTokenSource = null;
+        }
+    }
     private async Task ChangeColorAsync(Transform transform, CancellationToken cancellationToken)
     {
         _rend = transform.GetComponent<Renderer>();
@@ -38,27 +60,6 @@ public class ChangeColorAction : PerformAction
             {
                 await Task.Yield();
             }
-        }
-    }
-
-    public override void StopAction(Transform transform)
-    {
-        shouldPerformAction = false;
-
-        CancelTask();
-    }
-    public override void ChangeActivationState()
-    {
-        hasBeenActivated = !hasBeenActivated;
-    }
-
-    public override void CancelTask()
-    {
-        if (cancellationTokenSource != null)
-        {
-            cancellationTokenSource.Cancel();
-            cancellationTokenSource.Dispose();
-            cancellationTokenSource = null;
         }
     }
 }

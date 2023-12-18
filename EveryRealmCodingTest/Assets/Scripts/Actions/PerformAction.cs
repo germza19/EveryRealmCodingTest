@@ -2,15 +2,21 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
 using UnityEngine;
-public abstract class PerformAction
+public class PerformAction : ScriptableObject
 {
-    public bool hasBeenActivated = false;
     public bool shouldPerformAction = false;
 
     public CancellationTokenSource cancellationTokenSource;
+    public virtual void DoAction(Transform transform)
+    {
 
-    public abstract void ChangeActivationState();
-    public abstract void DoAction(Transform transform);
-    public abstract void StopAction(Transform transform);
-    public abstract void CancelTask();
+    }
+    public virtual void StopAction(Transform transform)
+    {
+
+    }
+    public virtual void CancelTask()
+    {
+
+    }
 }

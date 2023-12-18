@@ -6,7 +6,10 @@ using UnityEngine.UI;
 public class CanvasController : MonoBehaviour
 {
     [SerializeField] private float _yOffset = 2f;
-    [SerializeField] private List<ButtonController> _buttons = new List<ButtonController>();
+    private List<ButtonController> _buttons = new List<ButtonController>();
+    
+    [SerializeField] private Transform _buttonsParent;
+    [SerializeField] private ButtonController _buttonsPrefab;
     private CanvasGroup _canvasGroup;
     
     private void OnEnable()
@@ -24,18 +27,30 @@ public class CanvasController : MonoBehaviour
     private void Start()
     {
         SetCanvasGroup(false);
+        CreateBehaviourButtons();
     }
     public void SetCanvas(ObjectController objectController)
     {
         SetCanvasGroup(true);
+
         transform.position = new Vector3(objectController.transform.position.x, objectController.transform.position.y - _yOffset, transform.position.z);
 
         if(objectController != null )
         {
             for (int i = 0; i < _buttons.Count; i++)
             {
-                _buttons[i].SetButton(objectController.performActions[i]);
+                _buttons[i].SetButton(objectController);
             }
+        }
+    }
+
+    private void CreateBehaviourButtons()
+    {
+        foreach (PerformAction performAction in ActionsManager.Instance.performActions)
+        {
+            ButtonController newButton = Instantiate(_buttonsPrefab, _buttonsParent);
+            newButton.InitializeButton(performAction);
+            _buttons.Add(newButton);
         }
     }
 

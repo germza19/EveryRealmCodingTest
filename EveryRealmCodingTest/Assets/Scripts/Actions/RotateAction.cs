@@ -4,21 +4,39 @@ using System.Threading;
 using System.Threading.Tasks;
 using UnityEngine;
 
+[CreateAssetMenu(fileName = "RotateAction", menuName = "Actions/ Rotate")]
 public class RotateAction : PerformAction
 {
-    public float rotationSpeed;
-
-    public RotateAction(float rotationSpeed)
+    [SerializeField] private float rotationSpeed;
+    public override void CancelTask()
     {
-        this.rotationSpeed = rotationSpeed;
+        base.CancelTask();
+
+        if (cancellationTokenSource != null)
+        {
+            cancellationTokenSource.Cancel();
+            cancellationTokenSource.Dispose();
+            cancellationTokenSource = null;
+        }
     }
 
     public async override void DoAction(Transform transform)
     {
+        base.DoAction(transform);
+
         shouldPerformAction = true;
 
         cancellationTokenSource = new CancellationTokenSource();
         await RotateAsync(transform, cancellationTokenSource.Token);
+    }
+
+    public override void StopAction(Transform transform)
+    {
+        base.StopAction(transform);
+
+        shouldPerformAction = false;
+
+        CancelTask();
     }
     private async Task RotateAsync(Transform transform, CancellationToken cancellationToken)
     {
@@ -44,28 +62,6 @@ public class RotateAction : PerformAction
             {
                 await Task.Yield();
             }
-        }
-    }
-
-    public override void StopAction(Transform transform)
-    {
-        shouldPerformAction = false;
-
-
-        CancelTask();
-    }
-    public override void ChangeActivationState()
-    {
-        hasBeenActivated = !hasBeenActivated;
-    }
-
-    public override void CancelTask()
-    {
-        if (cancellationTokenSource != null)
-        {
-            cancellationTokenSource.Cancel();
-            cancellationTokenSource.Dispose();
-            cancellationTokenSource = null;
         }
     }
 }

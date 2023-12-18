@@ -4,24 +4,30 @@ using System.Threading;
 using System.Threading.Tasks;
 using UnityEngine;
 
+[CreateAssetMenu(fileName = "ChangeSizeAction", menuName = "Actions/ Change Size")]
 public class ChangeSizeAction : PerformAction
 {
-    private float _scaleSpeed;
-    private float _maxScale;
-    private float _minScale;
+    [SerializeField] private float _scaleSpeed;
+    [SerializeField] private float _maxScale;
+    [SerializeField] private float _minScale;
 
     private float _accumulatedTime = 0f;
 
-    public ChangeSizeAction(float scaleSpeed, float maxScale, float minScale)
+    public override void CancelTask()
     {
-        this._scaleSpeed = scaleSpeed;
-        this._maxScale = maxScale;
-        this._minScale = minScale;
+        base.CancelTask();
+
+        if (cancellationTokenSource != null)
+        {
+            cancellationTokenSource.Cancel();
+            cancellationTokenSource.Dispose();
+            cancellationTokenSource = null;
+        }
     }
 
     public async override void DoAction(Transform transform)
     {
-        CancelTask();
+        base.DoAction(transform);
 
         shouldPerformAction = true;
         _accumulatedTime = 0f;
@@ -30,11 +36,21 @@ public class ChangeSizeAction : PerformAction
         await ScaleAsync(transform, cancellationTokenSource.Token);
     }
 
+    public override void StopAction(Transform transform)
+    {
+        base.StopAction(transform);
+
+        shouldPerformAction = false;
+
+        _accumulatedTime = 0f;
+
+        CancelTask();
+    }
     private async Task ScaleAsync(Transform transform, CancellationToken cancellationToken)
     {
         while (!cancellationToken.IsCancellationRequested)
         {
-            if(shouldPerformAction)
+            if (shouldPerformAction)
             {
                 _accumulatedTime += Time.deltaTime;
 
@@ -50,30 +66,6 @@ public class ChangeSizeAction : PerformAction
             {
                 await Task.Yield();
             }
-        }
-    }
-
-    public override void StopAction(Transform transform)
-    {
-        shouldPerformAction = false;
-
-        _accumulatedTime = 0f;
-
-        CancelTask();
-    }
-
-    public override void ChangeActivationState()
-    {
-        hasBeenActivated = !hasBeenActivated;
-    }
-
-    public override void CancelTask()
-    {
-        if (cancellationTokenSource != null)
-        {
-            cancellationTokenSource.Cancel();
-            cancellationTokenSource.Dispose();
-            cancellationTokenSource = null;
         }
     }
 }
