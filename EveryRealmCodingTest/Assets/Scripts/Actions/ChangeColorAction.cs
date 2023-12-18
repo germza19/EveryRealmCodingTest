@@ -7,8 +7,8 @@ using UnityEngine;
 public class ChangeColorAction : PerformAction
 {
 
-    private MaterialPropertyBlock materialPropertyBlock;
-    private Renderer rend;
+    private MaterialPropertyBlock _materialPropertyBlock;
+    private Renderer _rend;
 
     private CancellationTokenSource _cancellationTokenSource;
 
@@ -21,8 +21,8 @@ public class ChangeColorAction : PerformAction
 
     private async Task ChangeColorAsync(Transform transform, CancellationToken cancellationToken)
     {
-        rend = transform.GetComponent<Renderer>();
-        materialPropertyBlock = new MaterialPropertyBlock();
+        _rend = transform.GetComponent<Renderer>();
+        _materialPropertyBlock = new MaterialPropertyBlock();
 
         while (!cancellationToken.IsCancellationRequested)
         {
@@ -30,9 +30,9 @@ public class ChangeColorAction : PerformAction
             {
                 Color randomColor = new Color(Random.value, Random.value, Random.value);
 
-                materialPropertyBlock.SetColor("_Color", randomColor);
+                _materialPropertyBlock.SetColor("_Color", randomColor);
 
-                rend.SetPropertyBlock(materialPropertyBlock);
+                _rend.SetPropertyBlock(_materialPropertyBlock);
 
                 await Task.Yield();
             }
@@ -46,10 +46,11 @@ public class ChangeColorAction : PerformAction
     public override void StopAction(Transform transform)
     {
         shouldPerformAction = false;
-        // Reset color to original state when stopping the action
-        Color originalColor = new Color(1f, 1f, 1f); // Set to your original color
-        materialPropertyBlock.SetColor("_Color", originalColor);
-        rend.SetPropertyBlock(materialPropertyBlock);
+
+        ////Color originalColor = new Color(1f, 1f, 1f);
+        ////materialPropertyBlock.SetColor("_Color", originalColor);
+        //rend.SetPropertyBlock(materialPropertyBlock);
+
         CancelScalingTask();
     }
 
