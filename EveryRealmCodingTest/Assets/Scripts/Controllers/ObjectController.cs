@@ -5,17 +5,7 @@ using UnityEngine;
 
 public class ObjectController : MonoBehaviour
 {
-    public List<PerformAction> performActions;
-
-    private void OnEnable()
-    {
-        ResetActions();
-    }
-    private void OnDisable()
-    {
-        ResetActions();
-    }
-
+    public List<PerformAction> performActions {get; private set;}
     public void HandleSelection()
     {
         foreach (PerformAction performAction in performActions)
@@ -36,19 +26,6 @@ public class ObjectController : MonoBehaviour
             }
         }
     }
-
-    private void ResetActions()
-    {
-        foreach (PerformAction performAction in performActions)
-        {
-            if (performAction != null)
-            {
-                performAction.CancelTask();
-            }
-        }
-        performActions.Clear();
-    }
-
     public void HandleActionButton(PerformAction performAction)
     {
         if (!performActions.Contains(performAction))
