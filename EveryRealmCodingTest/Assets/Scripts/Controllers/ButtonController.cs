@@ -64,7 +64,7 @@ public class ButtonController : MonoBehaviour
     {
         if(_currentController != null)
         {
-            if (_currentController.performActions.Contains(_performAction))
+            if (_currentController.GetCurrentActions().Contains(_performAction))
             {
                 return true;
             }

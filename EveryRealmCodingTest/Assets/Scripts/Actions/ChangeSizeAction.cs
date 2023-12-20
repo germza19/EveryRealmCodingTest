@@ -24,7 +24,6 @@ public class ChangeSizeAction : PerformAction
             cancellationTokenSource = null;
         }
     }
-
     public async override void DoAction(Transform transform)
     {
         base.DoAction(transform);
@@ -35,7 +34,6 @@ public class ChangeSizeAction : PerformAction
         cancellationTokenSource = new CancellationTokenSource();
         await ScaleAsync(transform, cancellationTokenSource.Token);
     }
-
     public override void StopAction(Transform transform)
     {
         base.StopAction(transform);

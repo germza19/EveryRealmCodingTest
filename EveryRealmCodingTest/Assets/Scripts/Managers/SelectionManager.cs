@@ -10,7 +10,7 @@ public class SelectionManager : MonoBehaviour
 
     [SerializeField] private LayerMask _selectableLayer;
     private Transform _selection;
-     private ObjectController _currentObject;
+    private ObjectController _currentObject;
 
     private void Awake()
     {

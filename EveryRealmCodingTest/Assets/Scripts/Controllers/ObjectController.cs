@@ -5,7 +5,12 @@ using UnityEngine;
 
 public class ObjectController : MonoBehaviour
 {
-    public List<PerformAction> performActions {get; private set;}
+    private List<PerformAction> performActions;
+
+    private void Awake()
+    {
+        performActions = new List<PerformAction>();
+    }
     public void HandleSelection()
     {
         foreach (PerformAction performAction in performActions)
@@ -36,6 +41,11 @@ public class ObjectController : MonoBehaviour
         {
             performActions.Remove(performAction);
         }
+    }
+
+    public List<PerformAction> GetCurrentActions()
+    {
+        return performActions;
     }
 }
 
