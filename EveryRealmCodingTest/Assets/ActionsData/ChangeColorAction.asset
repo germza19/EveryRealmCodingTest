@@ -12,4 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c6b4cf9ec8da78347a1393a409785c02, type: 3}
   m_Name: ChangeColorAction
   m_EditorClassIdentifier: 
-  iconSprite: {fileID: 21300000, guid: ba793c533fcb03c4cb6294c518696bcb, type: 3}
+  _iconSprite: {fileID: 21300000, guid: ba793c533fcb03c4cb6294c518696bcb, type: 3}

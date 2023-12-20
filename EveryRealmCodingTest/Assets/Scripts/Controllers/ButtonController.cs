@@ -47,7 +47,7 @@ public class ButtonController : MonoBehaviour
 
     private void SetIconImage()
     {
-        _iconImage.sprite = _performAction.iconSprite;
+        _iconImage.sprite = _performAction.Sprite;
     }
     private void SetButtonColor(bool value)
     {
@@ -64,7 +64,7 @@ public class ButtonController : MonoBehaviour
     {
         if(_currentController != null)
         {
-            if (_currentController.GetCurrentActions().Contains(_performAction))
+            if (_currentController.PerformActions.Contains(_performAction))
             {
                 return true;
             }

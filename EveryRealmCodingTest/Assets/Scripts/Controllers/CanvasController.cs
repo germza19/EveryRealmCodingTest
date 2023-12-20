@@ -42,7 +42,6 @@ public class CanvasController : MonoBehaviour
             }
         }
     }
-
     private void CreateBehaviourButtons()
     {
         foreach (PerformAction performAction in ActionsManager.Instance.performActions)
@@ -52,7 +51,6 @@ public class CanvasController : MonoBehaviour
             _buttons.Add(newButton);
         }
     }
-
     private void SetCanvasGroup(bool value)
     {
         if(value)

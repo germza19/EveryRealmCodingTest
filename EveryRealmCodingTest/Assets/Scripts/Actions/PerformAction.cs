@@ -4,10 +4,12 @@ using System.Threading;
 using UnityEngine;
 public class PerformAction : ScriptableObject
 {
-    public Sprite iconSprite;
-    public bool shouldPerformAction = false;
+    [SerializeField] private Sprite _iconSprite;
+    public Sprite Sprite { get { return _iconSprite; } }
 
-    public CancellationTokenSource cancellationTokenSource;
+    protected bool shouldPerformAction = false;
+
+    protected CancellationTokenSource cancellationTokenSource;
     public virtual void DoAction(Transform transform)
     {
 
@@ -20,4 +22,5 @@ public class PerformAction : ScriptableObject
     {
 
     }
+
 }

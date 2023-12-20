@@ -6,6 +6,7 @@ using UnityEngine;
 public class ObjectController : MonoBehaviour
 {
     private List<PerformAction> _performActions;
+    public List<PerformAction> PerformActions { get { return _performActions; } }
 
     private void Awake()
     {
@@ -41,11 +42,6 @@ public class ObjectController : MonoBehaviour
         {
             _performActions.Remove(performAction);
         }
-    }
-
-    public List<PerformAction> GetCurrentActions()
-    {
-        return _performActions;
     }
 }
 

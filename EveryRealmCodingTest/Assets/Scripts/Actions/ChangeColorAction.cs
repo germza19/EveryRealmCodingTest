@@ -16,7 +16,8 @@ public class ChangeColorAction : PerformAction
 
         shouldPerformAction = true;
         cancellationTokenSource = new CancellationTokenSource();
-        await ChangeColorAsync(transform, cancellationTokenSource.Token);
+        _rend = transform.GetComponent<Renderer>();
+        await ChangeColorAsync(cancellationTokenSource.Token);
     }
 
     public override void StopAction(Transform transform)
@@ -39,9 +40,9 @@ public class ChangeColorAction : PerformAction
             cancellationTokenSource = null;
         }
     }
-    private async Task ChangeColorAsync(Transform transform, CancellationToken cancellationToken)
+    private async Task ChangeColorAsync(CancellationToken cancellationToken)
     {
-        _rend = transform.GetComponent<Renderer>();
+
         _materialPropertyBlock = new MaterialPropertyBlock();
 
         while (!cancellationToken.IsCancellationRequested)
