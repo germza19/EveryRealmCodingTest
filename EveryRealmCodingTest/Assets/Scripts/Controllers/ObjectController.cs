@@ -5,15 +5,15 @@ using UnityEngine;
 
 public class ObjectController : MonoBehaviour
 {
-    private List<PerformAction> performActions;
+    private List<PerformAction> _performActions;
 
     private void Awake()
     {
-        performActions = new List<PerformAction>();
+        _performActions = new List<PerformAction>();
     }
     public void HandleSelection()
     {
-        foreach (PerformAction performAction in performActions)
+        foreach (PerformAction performAction in _performActions)
         {
             if (performAction != null)
             {
@@ -23,7 +23,7 @@ public class ObjectController : MonoBehaviour
     }
     public void HandleDeselection()
     {
-        foreach (PerformAction performAction in performActions)
+        foreach (PerformAction performAction in _performActions)
         {
             if (performAction != null)
             {
@@ -33,19 +33,19 @@ public class ObjectController : MonoBehaviour
     }
     public void HandleActionButton(PerformAction performAction)
     {
-        if (!performActions.Contains(performAction))
+        if (!_performActions.Contains(performAction))
         {
-            performActions.Add(performAction);
+            _performActions.Add(performAction);
         }
         else
         {
-            performActions.Remove(performAction);
+            _performActions.Remove(performAction);
         }
     }
 
     public List<PerformAction> GetCurrentActions()
     {
-        return performActions;
+        return _performActions;
     }
 }
 
